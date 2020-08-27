@@ -1,0 +1,44 @@
+#include <bits/stdc++.h> 
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+#define MAX_CARRY_POS    0x80000000
+
+int Sum(int a, int b)  
+{ 
+	bool error = false;
+	
+    // Evaluate the running sum
+    while (b != 0)  
+    {  
+        // Evaluate the carry  
+        int carry = a & b;  
+		
+		// Identify the overflow condition
+		// Assuming integer is of 4 bytes
+		if(carry & MAX_CARRY_POS) {
+			throw string("Overflow Error.");
+		}
+		
+        // Sum of bits of a and b  
+        a = a ^ b;  
+  
+        // Carry is shifted by one before adding to running sum.
+        b = carry << 1;  
+    }  
+    return a;  
+}   
+
+int main()
+{
+    try {
+        int sum = Sum(0x80000000, 0x80000000);
+    }
+    catch (string &e) {
+        cout<< "Exception - " << e << endl;
+    }
+
+    return 0;
+}

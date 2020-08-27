@@ -1,0 +1,61 @@
+void find_largest_sum(const uint32_t T, const std::vector<uint32_t> &I, vector<uint32_t> &M, uint32_t &S)
+{
+	bool pReplaceFlag = false;
+		
+	// Fill the Sub-Collection M
+	for(int i=0; i < I.size(); i++) { 
+	
+	    //Add the vector element to Sub-Set M.
+		if ((S + I[i]) <= T) {
+	
+			// Add the element to sub-set
+			M.push_back(I[i]);
+			
+			// Calculate the SUM of Sub-Collection M
+			S += I[i];
+		}
+	}
+	
+	
+	// If SUM of Sub-Collection M elements are less than specified sum T
+	if (S < T) {
+	
+		///////////////////////////////////////////////////////
+		// Travers through vector and substitute the element to  
+		// fill the gap.
+		///////////////////////////////////////////////////////
+		
+		do {
+			pReplaceFlag = false; //Reset the replace flag
+			
+			for(vector<uint32_t>::iterator it = M.begin(); it != M.end(); it++) {
+			
+				// Travers through Super-Set
+				for(int j=0; j < I.size(); j++) {
+					if ( (I[j] - *it) <= (T - S) ) {
+					
+						// Subsitute the element
+						M.erase(it);
+						M.insert(it, I[j]);
+						
+						//Re-evaluate the SUM
+						S = S - *it + I[j];
+						
+						if (S == T) {
+							return;
+						}
+						
+						pReplaceFlag = true; //Set the indication flag
+					}
+				}
+			}
+		} while(pReplaceFlag);
+	}
+}
+
+
+
+
+
+
+
